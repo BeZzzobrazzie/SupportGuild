@@ -1,0 +1,1 @@
+export { DeleteOperator } from './ui';

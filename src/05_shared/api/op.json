@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "prefix": "3AB",
+    "names": [
+      {
+        "id": 1,
+        "name": "abc"
+      },
+      {
+        "id": 2,
+        "name": "bcd"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "prefix": "3BC",
+    "names": [
+      {
+        "id": 1,
+        "name": "xyz"
+      }
+    ]
+  }
+]
