@@ -1,13 +1,16 @@
 import { operatorModel } from "src/04_entities/operator";
+import { ActionIcon } from "@mantine/core";
+import { IconEdit } from "@tabler/icons-react";
+import styles from "./styles.module.css";
 
-export function EditOperator({id}: {id: string}) {
+export function EditOperator({ id }: { id: string }) {
   function handleClick() {
     operatorModel.operatorChangeInitiated(id);
   }
 
   return (
-    <button type="button" onClick={handleClick}>
-      Edit
-    </button>
+    <ActionIcon onClick={handleClick} variant="default" size="lg">
+      <IconEdit />
+    </ActionIcon>
   );
 }

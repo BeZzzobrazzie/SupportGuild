@@ -7,6 +7,7 @@ function App() {
 
   const testTheme = createTheme({
     // defaultRadius: "10px",
+    primaryColor: "gray",
   })
 
 
