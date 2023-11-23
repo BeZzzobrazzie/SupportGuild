@@ -1,6 +1,6 @@
 import { operatorModel } from "src/04_entities/operator";
 import { ActionIcon, rem } from '@mantine/core';
-import { IconSquareX } from '@tabler/icons-react';
+import { IconX } from '@tabler/icons-react';
 
 export function DeleteOperator({id}: {id: string}) {
   function handleClick() {
@@ -9,7 +9,7 @@ export function DeleteOperator({id}: {id: string}) {
 
   return (
     <ActionIcon onClick={handleClick} variant="default" size="lg">
-      <IconSquareX />
+      <IconX />
     </ActionIcon>
   );
 }

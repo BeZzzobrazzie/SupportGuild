@@ -7,6 +7,8 @@ import { EditOperator } from "src/03_features/edit-operator";
 import { ResetOperator } from "src/03_features/reset-operator";
 import { DeleteOperator } from "src/03_features/delete-operator";
 import { TextInput, Box, ActionIcon, Group } from "@mantine/core";
+import { SaveOperator } from "src/03_features/save-operator";
+import { AddName } from "src/03_features/add-name";
 
 export function Operator({ id }: sharedTypes.OperatorProps) {
   const operator = useStoreMap({
@@ -34,7 +36,7 @@ export function Operator({ id }: sharedTypes.OperatorProps) {
 
         {editable ? (
           <ActionIcon.Group className={classes["operator__command-palete"]}>
-            <button type="button">Save</button>
+            <SaveOperator id={id} />
             <ResetOperator />
           </ActionIcon.Group>
         ) : (
@@ -57,7 +59,7 @@ function Names({
 }) {
   const names = operator?.names;
 
-  function handleChange() {}
+  function handleChange() { }
 
   const listNames = names?.map(({ id, name }) => (
     <TextInput
@@ -69,7 +71,7 @@ function Names({
   ));
   return (
     <Group gap="xs">
-      {listNames} {editable ? <button type="button">Add name</button> : <></>}
+      {listNames} {editable ? <AddName /> : <></>}
     </Group>
   );
 }

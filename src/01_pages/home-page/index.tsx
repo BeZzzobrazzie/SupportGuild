@@ -1,5 +1,6 @@
 import { useEvent, useList } from "effector-react";
 import { useEffect } from "react";
+import { OperatorCreationForm } from "src/02_widgets/operator-creation-form";
 import { Operator, operatorModel } from "src/04_entities/operator";
 
 export function HomePage() {
@@ -17,6 +18,7 @@ export function HomePage() {
 
   return (
     <div className="home-page">
+      <OperatorCreationForm />
       {listOp}
     </div>
   );
