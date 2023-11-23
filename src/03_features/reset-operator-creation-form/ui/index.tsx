@@ -1,10 +1,11 @@
 import { operatorModel } from "src/04_entities/operator";
 import { IconArrowBackUp } from "@tabler/icons-react";
 import { ActionIcon } from "@mantine/core";
+import { showOperatorCreationFormModel } from "src/03_features/show-operator-creation-form";
 
-export function ResetOperator() {
+export function ResetOperatorCreationForm() {
   function handleClick() {
-    operatorModel.operatorChangeCompleted();
+    showOperatorCreationFormModel.formHidden();
   }
 
   return (

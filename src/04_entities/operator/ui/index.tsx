@@ -20,33 +20,29 @@ export function Operator({ id }: sharedTypes.OperatorProps) {
   const editable = id === useStore($idEditableOperator);
 
   return (
-    <>
-      <Box
-        component={editable ? "form" : "div"}
-        className={classes["operator"]}
-      >
-        <Group gap="md">
-          <TextInput
-            placeholder="prefix"
-            value={operator?.prefix}
-            disabled={!editable}
-          />
-          <Names operator={operator} editable={editable} />
-        </Group>
+    <Box component={editable ? "form" : "div"} className={classes["operator"]}>
+      <Group gap="md">
+        <TextInput
+          size="xs"
+          placeholder="prefix"
+          value={operator?.prefix}
+          disabled={!editable}
+        />
+        <Names operator={operator} editable={editable} />
+      </Group>
 
-        {editable ? (
-          <ActionIcon.Group className={classes["operator__command-palete"]}>
-            <SaveOperator id={id} />
-            <ResetOperator />
-          </ActionIcon.Group>
-        ) : (
-          <ActionIcon.Group className={classes["operator__command-palete"]}>
-            <EditOperator id={id} />
-            <DeleteOperator id={id} />
-          </ActionIcon.Group>
-        )}
-      </Box>
-    </>
+      {editable ? (
+        <ActionIcon.Group className={classes["operator__command-palete"]}>
+          <SaveOperator id={id} />
+          <ResetOperator />
+        </ActionIcon.Group>
+      ) : (
+        <ActionIcon.Group className={classes["operator__command-palete"]}>
+          <EditOperator id={id} />
+          <DeleteOperator id={id} />
+        </ActionIcon.Group>
+      )}
+    </Box>
   );
 }
 
@@ -59,10 +55,11 @@ function Names({
 }) {
   const names = operator?.names;
 
-  function handleChange() { }
+  function handleChange() {}
 
   const listNames = names?.map(({ id, name }) => (
     <TextInput
+      size="xs"
       key={id}
       value={name}
       onChange={handleChange}

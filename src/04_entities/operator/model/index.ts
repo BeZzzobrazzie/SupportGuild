@@ -19,9 +19,10 @@ export const operatorChangeInitiated = createEvent<string>();
 export const operatorChangeCompleted = createEvent();
 export const operatorChangeSaved = createEvent<sharedTypes.Operator>();
 export const operatorDelete = createEvent<string>();
+export const changedEditablePrefix = createEvent<string>();
 
-
-export const $prefix = createStore("");
+export const $editablePrefix = restore(changedEditablePrefix, '');
+export const $editableNames = createStore<sharedTypes.Name[]>([]);
 export const $operators = restore<sharedTypes.Operator[]>(getOperatorsFx.doneData, []);
 export const $idEditableOperator = restore<string>(operatorChangeInitiated, '')
   .reset(operatorChangeCompleted);

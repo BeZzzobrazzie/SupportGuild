@@ -8,7 +8,7 @@ export function DeleteOperator({id}: {id: string}) {
   }
 
   return (
-    <ActionIcon onClick={handleClick} variant="default" size="lg">
+    <ActionIcon onClick={handleClick} variant="default" size="md">
       <IconX />
     </ActionIcon>
   );

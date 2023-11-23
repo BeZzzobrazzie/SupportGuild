@@ -8,7 +8,7 @@ export function AddName() {
   }
 
   return (
-    <ActionIcon onClick={handleClick} variant="default" size="lg">
+    <ActionIcon onClick={handleClick} variant="default" size="md">
       <IconPlus />
     </ActionIcon>
   );

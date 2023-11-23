@@ -9,7 +9,7 @@ export function EditOperator({ id }: { id: string }) {
   }
 
   return (
-    <ActionIcon onClick={handleClick} variant="default" size="lg">
+    <ActionIcon onClick={handleClick} variant="default" size="md">
       <IconEdit />
     </ActionIcon>
   );

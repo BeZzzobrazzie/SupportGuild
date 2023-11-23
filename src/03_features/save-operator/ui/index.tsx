@@ -8,7 +8,7 @@ export function SaveOperator({ id }: { id: string }) {
   }
 
   return (
-    <ActionIcon onClick={handleClick} variant="default" size="lg">
+    <ActionIcon onClick={handleClick} variant="default" size="md">
       <IconCheck />
     </ActionIcon>
   );
