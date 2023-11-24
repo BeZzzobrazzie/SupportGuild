@@ -1,0 +1,1 @@
+export { NewAddName } from './ui';

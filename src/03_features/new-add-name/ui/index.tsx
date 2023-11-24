@@ -3,9 +3,9 @@ import { ActionIcon } from "@mantine/core";
 import { IconPlus  } from '@tabler/icons-react';
 import styles from "./styles.module.css";
 
-export function AddName() {
+export function NewAddName() {
   function handleClick() {
-    operatorModel.addedName();
+    operatorModel.newAddedName();
   }
 
   return (

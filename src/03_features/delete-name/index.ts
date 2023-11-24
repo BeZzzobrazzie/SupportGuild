@@ -1,0 +1,1 @@
+export { DeleteName } from './ui';

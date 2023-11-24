@@ -1,16 +1,16 @@
 import { operatorModel } from "src/04_entities/operator";
 import { ActionIcon } from "@mantine/core";
-import { IconPlus  } from '@tabler/icons-react';
+import { IconCheck } from '@tabler/icons-react';
 import styles from "./styles.module.css";
 
-export function AddName() {
+export function CreateOperator() {
   function handleClick() {
-    operatorModel.addedName();
+    operatorModel.operatorCreated();
   }
 
   return (
     <ActionIcon onClick={handleClick} variant="default" size="md">
-      <IconPlus />
+      <IconCheck />
     </ActionIcon>
   );
 }

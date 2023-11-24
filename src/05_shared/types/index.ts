@@ -12,8 +12,9 @@ export type Operator = {
 }
 
 export interface Name {
-  id: string;
+  id: number;
   name: string;
+  tempId?: number;
 }
 
 
