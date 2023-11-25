@@ -2,17 +2,17 @@
 
 
 export type OperatorProps = {
-  id: string;
+  id: number;
 };
 
 export type Operator = {
-  id: string;
+  id: number;
   prefix: string;
   names: Name[];
 }
 
 export interface Name {
-  id: number;
+  id?: number;
   name: string;
   tempId?: number;
 }

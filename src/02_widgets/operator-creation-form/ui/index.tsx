@@ -40,17 +40,25 @@ export function OperatorCreationForm() {
 }
 
 function Names({ names }: { names?: sharedTypes.Name[] }) {
-  function handleChange() {}
 
-  const listNames = names?.map(({ id, name }) => (
-    <TextInput
-      size="xs"
-      key={id}
-      value={name}
-      onChange={handleChange}
-      rightSection={<DeleteName id={id} creationForm />}
-    />
-  ));
+  const listNames = names?.map(({ id, name }) => {
+    return (
+      id && (
+        <TextInput
+          size="xs"
+          key={id}
+          value={name}
+          onChange={(event) =>
+            operatorModel.changedNewEditableName({
+              id,
+              name: event.target.value,
+            })
+          }
+          rightSection={id && <DeleteName id={id} creationForm />}
+        />
+      )
+    );
+  });
   return (
     <Group gap="xs">
       {listNames}

@@ -3,7 +3,7 @@ import { ActionIcon } from "@mantine/core";
 import { IconEdit } from "@tabler/icons-react";
 import styles from "./styles.module.css";
 
-export function EditOperator({ id }: { id: string }) {
+export function EditOperator({ id }: { id: number }) {
   function handleClick() {
     operatorModel.operatorChangeInitiated(id);
   }

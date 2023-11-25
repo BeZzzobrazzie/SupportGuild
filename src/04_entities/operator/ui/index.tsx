@@ -1,6 +1,11 @@
 import { useStore, useStoreMap } from "effector-react";
 import classes from "./classes.module.css";
-import { $editableNames, $editablePrefix, $idEditableOperator, $operators } from "../model";
+import {
+  $editableNames,
+  $editablePrefix,
+  $idEditableOperator,
+  $operators,
+} from "../model";
 import { sharedTypes } from "src/05_shared/types";
 import { operatorModel } from "..";
 import { EditOperator } from "src/03_features/edit-operator";
@@ -22,8 +27,6 @@ export function Operator({ id }: sharedTypes.OperatorProps) {
   const editablePrefix = useStore($editablePrefix);
   const editableNames = useStore($editableNames);
 
-  if(editable) console.log(editableNames);
-
   return (
     <Box component={editable ? "form" : "div"} className={classes["operator"]}>
       <Group gap="md">
@@ -36,7 +39,10 @@ export function Operator({ id }: sharedTypes.OperatorProps) {
           }
           disabled={!editable}
         />
-        <Names operator={operator} editable={editable} />
+        <Names
+          names={editable ? editableNames : operator ? operator.names : []}
+          editable={editable}
+        />
       </Group>
 
       {editable ? (
@@ -55,26 +61,34 @@ export function Operator({ id }: sharedTypes.OperatorProps) {
 }
 
 function Names({
-  operator,
   editable,
+  names,
 }: {
-  operator?: sharedTypes.Operator;
   editable: boolean;
+  names: sharedTypes.Name[];
 }) {
-  const names = operator?.names;
-
   function handleChange() {}
 
-  const listNames = names?.map(({ id, name }) => (
-    <TextInput
-      size="xs"
-      key={id}
-      value={name}
-      onChange={handleChange}
-      disabled={!editable}
-      rightSection={editable ? <DeleteName id={id} /> : <></>}
-    />
-  ));
+  const listNames = names?.map(({ id, name, tempId }) => {
+    return (
+      <TextInput
+        size="xs"
+        key={tempId ? tempId : id}
+        value={name}
+        onChange={
+          tempId
+            ? (event) =>
+                operatorModel.changedEditableName({
+                  tempId,
+                  name: event.target.value,
+                })
+            : handleChange
+        }
+        disabled={!editable}
+        rightSection={editable && tempId ? <DeleteName id={tempId} /> : <></>}
+      />
+    );
+  });
   return (
     <Group gap="xs">
       {listNames} {editable ? <AddName /> : <></>}

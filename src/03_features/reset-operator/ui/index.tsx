@@ -4,7 +4,7 @@ import { ActionIcon } from "@mantine/core";
 
 export function ResetOperator() {
   function handleClick() {
-    operatorModel.operatorChangeCompleted();
+    operatorModel.resetChanges();
   }
 
   return (

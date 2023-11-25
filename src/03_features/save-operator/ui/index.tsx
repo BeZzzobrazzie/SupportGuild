@@ -3,8 +3,9 @@ import { ActionIcon } from "@mantine/core";
 import { IconCheck } from '@tabler/icons-react';
 import styles from "./styles.module.css";
 
-export function SaveOperator({ id }: { id: string }) {
+export function SaveOperator({ id }: { id: number }) {
   function handleClick() {
+    operatorModel.operatorChangeSaved(id);
   }
 
   return (

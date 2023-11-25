@@ -15,9 +15,7 @@ export function HomePage() {
   }, [handlePageMount]);
 
   const listOp = useList(operatorModel.$operators, (operator) => (
-    <>
-      <Operator id={operator.id} />
-    </>
+    <Operator id={operator.id} />
   ));
 
   const showForm = useStore(showOperatorCreationFormModel.$showForm);
@@ -25,7 +23,6 @@ export function HomePage() {
   return (
     <div className="home-page">
       {showForm ? <OperatorCreationForm /> : <ShowOperatorCreationForm />}
-
       {listOp}
     </div>
   );

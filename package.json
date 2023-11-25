@@ -16,7 +16,6 @@
     "axios": "^1.6.2",
     "effector": "^22.8.7",
     "effector-react": "^22.5.4",
-    "mock-config-server": "^3.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
