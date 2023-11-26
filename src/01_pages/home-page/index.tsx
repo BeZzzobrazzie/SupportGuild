@@ -6,6 +6,7 @@ import {
   ShowOperatorCreationForm,
   showOperatorCreationFormModel,
 } from "src/03_features/show-operator-creation-form";
+import { SortingSelection } from "src/04_entities/sorting-selection";
 
 export function HomePage() {
   const handlePageMount = useEvent(operatorModel.pageMounted);
@@ -22,6 +23,7 @@ export function HomePage() {
 
   return (
     <div className="home-page">
+      <SortingSelection />
       {showForm ? <OperatorCreationForm /> : <ShowOperatorCreationForm />}
       {listOp}
     </div>

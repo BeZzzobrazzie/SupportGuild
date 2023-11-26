@@ -33,7 +33,6 @@ export function Operator({ id }: sharedTypes.OperatorProps) {
     <Box component={editable ? "form" : "div"} className={classes["operator"]}>
       <Group gap="md">
         <TextInput
-          classNames={{input: classes["operator__prefix"]}}
           size="xs"
           placeholder="prefix"
           value={editable ? editablePrefix : operator?.prefix}
