@@ -5,6 +5,7 @@ import {
   $editablePrefix,
   $idEditableOperator,
   $operators,
+  $pending,
 } from "../model";
 import { sharedTypes } from "src/05_shared/types";
 import { operatorModel } from "..";
@@ -26,34 +27,37 @@ export function Operator({ id }: sharedTypes.OperatorProps) {
   const editable = id === useStore($idEditableOperator);
   const editablePrefix = useStore($editablePrefix);
   const editableNames = useStore($editableNames);
+  const pending = useStore($pending);
 
   return (
     <Box component={editable ? "form" : "div"} className={classes["operator"]}>
       <Group gap="md">
         <TextInput
+          classNames={{input: classes["operator__prefix"]}}
           size="xs"
           placeholder="prefix"
           value={editable ? editablePrefix : operator?.prefix}
           onChange={(event) =>
             operatorModel.changedEditablePrefix(event.target.value)
           }
-          disabled={!editable}
+          disabled={!editable || pending}
         />
         <Names
           names={editable ? editableNames : operator ? operator.names : []}
           editable={editable}
+          pending={pending}
         />
       </Group>
 
       {editable ? (
         <ActionIcon.Group className={classes["operator__command-palete"]}>
-          <SaveOperator id={id} />
-          <ResetOperator />
+          <SaveOperator id={id} pending={pending} />
+          <ResetOperator pending={pending} />
         </ActionIcon.Group>
       ) : (
         <ActionIcon.Group className={classes["operator__command-palete"]}>
-          <EditOperator id={id} />
-          <DeleteOperator id={id} />
+          <EditOperator id={id} pending={pending} />
+          <DeleteOperator id={id} pending={pending} />
         </ActionIcon.Group>
       )}
     </Box>
@@ -62,9 +66,11 @@ export function Operator({ id }: sharedTypes.OperatorProps) {
 
 function Names({
   editable,
+  pending,
   names,
 }: {
   editable: boolean;
+  pending: boolean;
   names: sharedTypes.Name[];
 }) {
   function handleChange() {}
@@ -84,14 +90,14 @@ function Names({
                 })
             : handleChange
         }
-        disabled={!editable}
-        rightSection={editable && tempId ? <DeleteName id={tempId} /> : <></>}
+        disabled={!editable || pending}
+        rightSection={editable && !pending && tempId ? <DeleteName id={tempId} /> : <></>}
       />
     );
   });
   return (
     <Group gap="xs">
-      {listNames} {editable ? <AddName /> : <></>}
+      {listNames} {editable && !pending ? <AddName /> : <></>}
     </Group>
   );
 }

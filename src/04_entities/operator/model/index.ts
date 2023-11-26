@@ -5,7 +5,9 @@ import {
   sample,
   restore,
   split,
+  combine,
 } from "effector";
+import { or } from "patronum";
 import {
   deleteOperator,
   getOperators,
@@ -34,6 +36,7 @@ export const deleteOperatorFx = createEffect(async (id: number) => {
   const response = await deleteOperator(id);
   return response;
 });
+
 
 export const pageMounted = createEvent();
 export const operatorChangeInitiated = createEvent<number>();
@@ -70,29 +73,28 @@ export const newAddedName = createEvent();
 export const resetChangesFormCreation = createEvent();
 export const operatorCreated = createEvent();
 
+
 export const $operators = restore<sharedTypes.Operator[]>(
   getOperatorsFx.doneData,
   []
 );
 export const $idEditableOperator = restore<number>(
   operatorChangeInitiated,
-  null
-).reset(resetChanges);
-export const $editablePrefix = restore<string>(changedEditablePrefix, "").reset(
-  resetChanges
-);
-export const $editableNames = createStore<sharedTypes.Name[]>([]).reset(
-  resetChanges
-);
+  null)
+  .reset(resetChanges);
+export const $editablePrefix = restore<string>(changedEditablePrefix, "")
+  .reset(resetChanges);
+export const $editableNames = createStore<sharedTypes.Name[]>([])
+  .reset(resetChanges);
 const $idName = createStore(0).reset(resetChanges);
+export const $pending = or(getOperatorsFx.pending, createOperatorsFx.pending, updateOperatorsFx.pending, deleteOperatorFx.pending);
 
-export const $newEditablePrefix = restore(changedNewEditablePrefix, "").reset(
-  resetChangesFormCreation
-);
-export const $newEditableNames = createStore<sharedTypes.Name[]>([]).reset(
-  resetChangesFormCreation
-);
-const $idNewName = createStore(0).reset(resetChangesFormCreation);
+export const $newEditablePrefix = restore(changedNewEditablePrefix, "")
+  .reset(resetChangesFormCreation);
+export const $newEditableNames = createStore<sharedTypes.Name[]>([])
+  .reset(resetChangesFormCreation);
+const $idNewName = createStore(0)
+  .reset(resetChangesFormCreation);
 
 sample({
   clock: newAddedName,

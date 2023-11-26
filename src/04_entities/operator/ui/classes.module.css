@@ -23,6 +23,9 @@
 
 }
 
-/* .operator__prefix {
-  line-height: var(--mantine-line-height);
-} */
+/* ========================== */
+
+
+.operator__prefix {
+  opacity: 1;
+}
