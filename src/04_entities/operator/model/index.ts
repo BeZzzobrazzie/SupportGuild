@@ -72,7 +72,7 @@ export const changedNewEditableName = createEvent<{
 export const newAddedName = createEvent();
 export const resetChangesFormCreation = createEvent();
 export const operatorCreated = createEvent();
-export const changedSorting = createEvent<{category: string | null, directionSort: boolean}>();
+export const changedSorting = createEvent<{category: string | null, direction: boolean}>();
 
 
 export const $operators = restore<sharedTypes.Operator[]>(
@@ -90,6 +90,10 @@ export const $editableNames = createStore<sharedTypes.Name[]>([])
   .reset(resetChanges);
 const $idName = createStore(0).reset(resetChanges);
 export const $pending = or(getOperatorsFx.pending, createOperatorsFx.pending, updateOperatorsFx.pending, deleteOperatorFx.pending);
+const $sortCategory = createStore<string | null>(null)
+  .on(changedSorting, (_, {category}) => category);
+const $sortDirection = createStore(false)
+  .on(changedSorting, (_, {direction}) => direction);
 
 export const $newEditablePrefix = restore(changedNewEditablePrefix, "")
   .reset(resetChangesFormCreation);
@@ -241,17 +245,17 @@ sample({
 });
 
 sample({
-  clock: changedSorting,
-  source: $operators,
-  fn: (store, {category, directionSort}) => {
-    const direction = directionSort ? 1 : -1;
+  clock: [$operators, changedSorting],
+  source: {category: $sortCategory, direction: $sortDirection, operators: $operators},
+  fn: ({category, direction, operators}) => {
+    const directionSort = direction ? -1 : 1;
     switch (category) {
       case 'prefix':
-        return [...store].sort((a, b) => direction * a.prefix.localeCompare(b.prefix));
+        return [...operators].sort((a, b) => directionSort * a.prefix.localeCompare(b.prefix));
       case 'name': 
-        return [...store].sort((a, b) => direction * a.names[0].name.localeCompare(b.names[0].name));
+        return [...operators].sort((a, b) => directionSort * a.names[0].name.localeCompare(b.names[0].name));
       case null:
-        return store;
+        return operators;
       default:
         return [];
     }

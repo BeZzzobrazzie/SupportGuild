@@ -1,5 +1,5 @@
 import { createEvent, createStore, sample, split } from "effector";
-import { operatorModel } from "src/04_entities/operator"; // кросс-импорт, что неверно
+import { operatorModel } from "src/04_entities/operator"; // кросс-импорт ??
 
 
 export const clickedSort = createEvent<string>();
@@ -7,7 +7,6 @@ const changedPrefix = createEvent();
 const changedName = createEvent();
 const unknownEntry = createEvent();
 
-export const $category = createStore(['prefix', 'name']);
 export const $activeCategory = createStore<string | null>(null);
 export const $activeDirection = createStore(false);
 export const $prefixSortedReversed = createStore([false, false])
@@ -76,10 +75,10 @@ sample({
   target: $activeDirection,
 })
 
-sample({ // кросс-импорт, что неверно
+sample({ 
   clock: [$activeCategory, $activeDirection],
   source: {category: $activeCategory, direction: $activeDirection},
-  fn: ({category, direction}) => ({category: category, directionSort: direction}),
+  fn: ({category, direction}) => ({category: category, direction: direction}),
   target: operatorModel.changedSorting
 })
 

@@ -16,14 +16,11 @@ export function HomePage() {
     handlePageMount();
   }, [handlePageMount]);
 
-  // const listOp = useList(operatorModel.$sortedOperators, (operator) => (
-  //   <Operator id={operator.id} />
-  // ));
+  const listOp = useList(operatorModel.$sortedOperators, (operator) => (
+    <Operator id={operator.id} />
+  ));
 
   const showForm = useStore(showOperatorCreationFormModel.$showForm);
-  const activeCategory = useStore(SortingSelectionModel.$activeCategory);
-  const activeDirection = useStore(SortingSelectionModel.$activeDirection);
-  // operatorModel.changedSorting([activeCategory, activeDirection]);
   return (
     <div className="home-page">
       <Box display="flex">
@@ -31,19 +28,9 @@ export function HomePage() {
         {showForm ? <></> : <ShowOperatorCreationForm />}
       </Box>
       {showForm ? <OperatorCreationForm /> : <></>}
-      {/* {listOp} */}
-      <OperatorList activeCategory={activeCategory} activeDirection={activeDirection}/>
+      {listOp}
     </div>
   );
 }
 
-function OperatorList({activeCategory, activeDirection}: {activeCategory : string | null , activeDirection : boolean}) {
 
-  operatorModel.changedSorting({category: activeCategory, directionSort: activeDirection});
-
-
-  const listOp = useList(operatorModel.$sortedOperators, (operator) => (
-    <Operator id={operator.id} />
-  ));
-  return listOp;
-}
