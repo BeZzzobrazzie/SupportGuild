@@ -1,4 +1,5 @@
 import { createEvent, createStore, sample, split } from "effector";
+import { operatorModel } from "src/04_entities/operator"; // кросс-импорт, что неверно
 
 
 export const clickedSort = createEvent<string>();
@@ -7,17 +8,12 @@ const changedName = createEvent();
 const unknownEntry = createEvent();
 
 export const $category = createStore(['prefix', 'name']);
-export const $activeCategory = createStore<string | null>('');
-export const $prefixSortedReversed = createStore([false, false]);
-export const $nameSorted = createStore(false);
-export const $nameReversed = createStore(false);
-
-{
-  prefix: {
-    sorted: false,
-    reversed: false,
-  }
-}
+export const $activeCategory = createStore<string | null>(null);
+export const $activeDirection = createStore(false);
+export const $prefixSortedReversed = createStore([false, false])
+  .reset(changedName);
+export const $nameSortedReversed = createStore([false, false])
+  .reset(changedPrefix);
 
 split({
   source: clickedSort,
@@ -35,7 +31,8 @@ split({
 sample({
   clock: changedPrefix,
   source: $activeCategory,
-  fn: (store) => if (store === 'prefix') 
+  fn: (_) => 'prefix',
+  target: $activeCategory,
 })
 
 sample({
@@ -48,8 +45,41 @@ sample({
   target: $prefixSortedReversed
 })
 
+sample({
+  clock: changedPrefix,
+  source: $prefixSortedReversed,
+  fn: ([_, reversed]) => reversed,
+  target: $activeDirection,
+})
 
+sample({
+  clock: changedName,
+  source: $activeCategory,
+  fn: (_) => 'name',
+  target: $activeCategory,
+})
 
+sample({
+  clock: changedName,
+  source: $nameSortedReversed,
+  fn: ([sorted, reversed]) => {
+    if (sorted) return [true, !reversed];
+    else return [true, false];
+  },
+  target: $nameSortedReversed
+})
 
+sample({
+  clock: changedName,
+  source: $nameSortedReversed,
+  fn: ([_, reversed]) => reversed,
+  target: $activeDirection,
+})
 
+sample({ // кросс-импорт, что неверно
+  clock: [$activeCategory, $activeDirection],
+  source: {category: $activeCategory, direction: $activeDirection},
+  fn: ({category, direction}) => ({category: category, directionSort: direction}),
+  target: operatorModel.changedSorting
+})
 

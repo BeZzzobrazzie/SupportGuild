@@ -72,12 +72,14 @@ export const changedNewEditableName = createEvent<{
 export const newAddedName = createEvent();
 export const resetChangesFormCreation = createEvent();
 export const operatorCreated = createEvent();
+export const changedSorting = createEvent<{category: string | null, directionSort: boolean}>();
 
 
 export const $operators = restore<sharedTypes.Operator[]>(
   getOperatorsFx.doneData,
   []
 );
+export const $sortedOperators = createStore<sharedTypes.Operator[]>([]);
 export const $idEditableOperator = restore<number>(
   operatorChangeInitiated,
   null)
@@ -237,6 +239,27 @@ sample({
   clock: getOperatorsFx.done,
   target: resetChanges,
 });
+
+sample({
+  clock: changedSorting,
+  source: $operators,
+  fn: (store, {category, directionSort}) => {
+    const direction = directionSort ? 1 : -1;
+    switch (category) {
+      case 'prefix':
+        return [...store].sort((a, b) => direction * a.prefix.localeCompare(b.prefix));
+      case 'name': 
+        return [...store].sort((a, b) => direction * a.names[0].name.localeCompare(b.names[0].name));
+      case null:
+        return store;
+      default:
+        return [];
+    }
+  },
+  target: $sortedOperators,
+})
+
+
 
 split({
   source: deletedName,

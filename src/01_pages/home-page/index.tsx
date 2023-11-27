@@ -6,7 +6,8 @@ import {
   ShowOperatorCreationForm,
   showOperatorCreationFormModel,
 } from "src/03_features/show-operator-creation-form";
-import { SortingSelection } from "src/04_entities/sorting-selection";
+import { SortingSelection, SortingSelectionModel } from "src/04_entities/sorting-selection";
+import { Box } from "@mantine/core";
 
 export function HomePage() {
   const handlePageMount = useEvent(operatorModel.pageMounted);
@@ -15,17 +16,34 @@ export function HomePage() {
     handlePageMount();
   }, [handlePageMount]);
 
-  const listOp = useList(operatorModel.$operators, (operator) => (
-    <Operator id={operator.id} />
-  ));
+  // const listOp = useList(operatorModel.$sortedOperators, (operator) => (
+  //   <Operator id={operator.id} />
+  // ));
 
   const showForm = useStore(showOperatorCreationFormModel.$showForm);
-
+  const activeCategory = useStore(SortingSelectionModel.$activeCategory);
+  const activeDirection = useStore(SortingSelectionModel.$activeDirection);
+  // operatorModel.changedSorting([activeCategory, activeDirection]);
   return (
     <div className="home-page">
-      <SortingSelection />
-      {showForm ? <OperatorCreationForm /> : <ShowOperatorCreationForm />}
-      {listOp}
+      <Box display="flex">
+        <SortingSelection />
+        {showForm ? <></> : <ShowOperatorCreationForm />}
+      </Box>
+      {showForm ? <OperatorCreationForm /> : <></>}
+      {/* {listOp} */}
+      <OperatorList activeCategory={activeCategory} activeDirection={activeDirection}/>
     </div>
   );
+}
+
+function OperatorList({activeCategory, activeDirection}: {activeCategory : string | null , activeDirection : boolean}) {
+
+  operatorModel.changedSorting({category: activeCategory, directionSort: activeDirection});
+
+
+  const listOp = useList(operatorModel.$sortedOperators, (operator) => (
+    <Operator id={operator.id} />
+  ));
+  return listOp;
 }
