@@ -1,0 +1,6 @@
+.explorer {
+  border: 1px solid bisque;
+  border-radius: 5px;
+  min-height: 500px;
+  max-width: 300px;
+}
