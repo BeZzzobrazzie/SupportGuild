@@ -33,6 +33,8 @@ export function TestPage() {
     handlePageMount();
   }, [handlePageMount]);
 
+  const exUnits = useStore($exUnits);
+  console.log(exUnits);
   return (
     <Container size="xs" mt="150">
       <Box className={classes["explorer"]}>
@@ -71,15 +73,18 @@ function ExplorerUnit(obj: UnitProps) {
     store: $exUnits,
     keys: [id],
     fn: (store, [exUnitId]) => {
+      console.log(store);
       const childIds = store.find(({id}) => id === exUnitId)?.childIds;
-      return store.map((unit) => {
+      const result = store.map((unit) => {
         if (childIds?.includes(unit.id)) {
           return (<p>{unit.id}</p>);
         }
-      });
+      })
+      return result;
     },
   })
 
+  // const unitChildren:string[] = [];
 
   switch (obj.role) {
     case 'root':
