@@ -35,3 +35,10 @@ export const deleteOperator = async (id: number) => {
   const response = await host.delete(`api/operators/${id}`);
   return response;
 };
+
+
+export const getExUnits = async () => {
+  const response = await host.get("api/explorer-units", {});
+  const { data } = response;
+  return data;
+};

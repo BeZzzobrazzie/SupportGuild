@@ -24,3 +24,21 @@
     ]
   }
 ]
+
+[
+  {
+    "id": 0,
+    "title": "root",
+    "childIds": [1]
+  },
+  {
+    "id": 1,
+    "title": "dir-one",
+    "childIds": [2]
+  },
+  {
+    "id": 2,
+    "title": "file-one",
+    "childIds": []
+  }
+]
