@@ -11,7 +11,6 @@ interface ExplorerUnitProps {
 
 interface RootProps {
   role: "root",
-  children: ReactNode,
 }
 
 interface FileProps {
@@ -20,7 +19,6 @@ interface FileProps {
 
 interface DirPorps {
   role: "dir",
-  children: ReactNode,
 }
 
 type UnitProps = RootProps | FileProps | DirPorps;
@@ -34,19 +32,58 @@ export function TestPage() {
   }, [handlePageMount]);
 
   const exUnits = useStore($exUnits);
-  console.log(exUnits);
   return (
     <Container size="xs" mt="150">
-      <Box className={classes["explorer"]}>
-        <ExplorerUnit role="root">
-
-        </ExplorerUnit>
-        {/* <ExplorerUnit role="dir" /> */}
-        {/* <ExplorerUnit role="file" /> */}
-      </Box>
+      <Explorer />
     </Container>
   );
 }
+
+
+
+
+function Explorer() {
+
+  function i(childIds : number[]): ReactNode {
+    return childIds.map((item) => {
+      const elem = exUnits.find(unit => unit.id === item);
+      if (elem === undefined) {
+        return <div></div>;
+      }
+      const children = elem?.childIds;
+      let result = i(children);
+      
+      return <div>{elem?.title} {result}</div>;
+    })
+  }
+
+  const exUnits = useStore($exUnits);
+  const root = exUnits.find(item => item.role === "root");
+  let result : any = '';
+  if(root !== undefined) {
+    result = i(root?.childIds);
+  }
+
+
+  return(
+    <Box className={classes["explorer"]}>
+      {result}
+    </Box>
+  )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -73,7 +110,6 @@ function ExplorerUnit(obj: UnitProps) {
     store: $exUnits,
     keys: [id],
     fn: (store, [exUnitId]) => {
-      console.log(store);
       const childIds = store.find(({id}) => id === exUnitId)?.childIds;
       const result = store.map((unit) => {
         if (childIds?.includes(unit.id)) {
@@ -83,6 +119,7 @@ function ExplorerUnit(obj: UnitProps) {
       return result;
     },
   })
+
 
   // const unitChildren:string[] = [];
 

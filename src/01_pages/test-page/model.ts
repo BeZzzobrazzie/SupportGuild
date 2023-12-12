@@ -3,7 +3,8 @@ import { getExUnits } from "src/05_shared/api";
 
 interface exUnitsStoreType {
   id: number,
-  name: string,
+  title: string,
+  role: string,
   childIds: number[],
 };
 
