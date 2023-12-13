@@ -42,3 +42,35 @@
     "childIds": []
   }
 ]
+
+{
+  "root": {
+    "childIds": [1]
+  },
+  "explorer-units": [
+    {
+      "id": 1,
+      "title": "dir-one",
+      "role": "dir",
+      "childIds": [2, 3]
+    },
+    {
+      "id": 2,
+      "title": "file-one",
+      "role": "file",
+      "childIds": []
+    },
+    {
+      "id": 3,
+      "title": "dir-two",
+      "role": "dir",
+      "childIds": [4]
+    },
+    {
+      "id": 4,
+      "title": "file-two",
+      "role": "file",
+      "childIds": []
+    }
+  ]
+}
