@@ -17,5 +17,15 @@ export interface Name {
   tempId?: number;
 }
 
+export interface rootType {
+  childIds: number[],
+};
+export interface exUnitsStoreType {
+  id: number,
+  title: string,
+  role: string,
+  childIds: number[],
+};
+
 
 export * as sharedTypes from './';

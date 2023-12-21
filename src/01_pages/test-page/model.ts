@@ -1,15 +1,8 @@
 import { createEffect, createEvent, createStore, sample, restore, combine } from "effector";
 import { getExUnits } from "src/05_shared/api";
+import { exUnitsStoreType, rootType } from "src/05_shared/types";
 
-interface rootType {
-  childIds: number[],
-};
-interface exUnitsStoreType {
-  id: number,
-  title: string,
-  role: string,
-  childIds: number[],
-};
+
 
 
 const getExUnitsFx = createEffect(async () => {

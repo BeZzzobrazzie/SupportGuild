@@ -4,3 +4,14 @@
   min-height: 500px;
   max-width: 300px;
 }
+
+.ex-unit {
+}
+.ex-unit__label-panel {
+  display: flex;
+  padding: 2px;
+}
+.ex-unit__indent {
+  padding-left: 10px;
+  border: 1px solid white;
+}

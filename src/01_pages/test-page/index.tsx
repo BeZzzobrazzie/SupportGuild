@@ -1,28 +1,16 @@
 import { Container, Box } from "@mantine/core";
+import {
+  IconChevronDown,
+  IconChevronRight,
+  IconFolderFilled,
+  IconFile,
+} from "@tabler/icons-react";
 import classes from "./classes.module.css";
 import { ReactNode, useEffect } from "react";
 import { useEvent, useStore, useStoreMap } from "effector-react";
 import { $exUnits, $pending, $root, pageMounted } from "./model";
 import { PopUp, popUpModel } from "src/04_entities/pop-up";
-
-interface ExplorerUnitProps {
-  role: "root" | "dir" | "file";
-  children: ReactNode;
-}
-
-interface RootProps {
-  role: "root";
-}
-
-interface FileProps {
-  role: "file";
-}
-
-interface DirPorps {
-  role: "dir";
-}
-
-type UnitProps = RootProps | FileProps | DirPorps;
+import { exUnitsStoreType } from "src/05_shared/types";
 
 export function TestPage() {
   const handlePageMount = useEvent(pageMounted);
@@ -39,33 +27,32 @@ export function TestPage() {
 }
 
 function Explorer() {
-  function i(childIds: number[]): ReactNode {
+  let nestingLevel = 0;
+  function renderExUnits(childIds: number[]): ReactNode {
+    
     return childIds.map((item) => {
       const elem = exUnits.find((unit) => unit.id === item);
-      if (elem === undefined) {
-        return <div></div>;
-      }
-      const children = elem?.childIds;
-      let result = i(children);
-
+      if (elem === undefined) return <></>;
+      const children = elem.childIds;
+      nestingLevel = nestingLevel + 1;
+      const renderNestingLevel = nestingLevel;
+      const result = renderExUnits(children);
+      nestingLevel = nestingLevel - 1;
       return (
-        <div>
-          {elem?.title} {result}
-        </div>
+        <ExUnit key={elem.id} unit={elem} content={result} nestingLevel={renderNestingLevel} />
       );
     });
   }
 
   const root = useStore($root);
-  console.log(root);
   const exUnits = useStore($exUnits);
-  console.log(exUnits);
 
-  const result = i(root.childIds);
+  const result = renderExUnits(root.childIds);
 
   return (
     <>
-      <PopUp>Error!!!
+      <PopUp>
+        Error!!!
         <button onClick={() => popUpModel.popUpHidden()}>Close</button>
       </PopUp>
       <Box className={classes["explorer"]}>{result}</Box>
@@ -73,46 +60,41 @@ function Explorer() {
   );
 }
 
-function ExplorerUnit(obj: UnitProps) {
-  const exUnits = useStore($exUnits);
-  const id = 0;
-  // const childIds = useStoreMap({
-  //   store: $exUnits,
-  //   keys: [id],
-  //   fn: (store, [exUnitId]) => store.find(({id}) => id === exUnitId)?.childIds,
-  // })
+function ExUnit({
+  unit,
+  content,
+  nestingLevel,
+}: {
+  unit: exUnitsStoreType;
+  content: ReactNode;
+  nestingLevel: number;
+}) {
+  const indent = [];
+  for (let i = 0; i < nestingLevel; i++) {
+    indent.push(<Box className={classes["ex-unit__indent"]}></Box>);
+  }
 
-  // const unitChildren = useStoreMap({
-  //   store: $exUnits,
-  //   keys: [id],
-  //   fn: (store, [exUnitId]) => {
-  //     const childIds = store.find(({id}) => id === exUnitId)?.childIds;
-  //     return store.map((unit) => childIds?.includes(unit.id));
-  //   },
-  // })
-
-  const unitChildren = useStoreMap({
-    store: $exUnits,
-    keys: [id],
-    fn: (store, [exUnitId]) => {
-      const childIds = store.find(({ id }) => id === exUnitId)?.childIds;
-      const result = store.map((unit) => {
-        if (childIds?.includes(unit.id)) {
-          return <p>{unit.id}</p>;
-        }
-      });
-      return result;
-    },
-  });
-
-  // const unitChildren:string[] = [];
-
-  switch (obj.role) {
-    case "root":
-      return <>{unitChildren}</>;
-    case "dir":
-      return <>{unitChildren}</>;
-    case "file":
-      return <p>file</p>;
+  if (unit.role === "dir") {
+    return (
+      <Box className={classes["ex-unit"]}>
+        <Box className={classes["ex-unit__label-panel"]}>
+          {indent}
+          <IconChevronRight />
+          <IconFolderFilled />
+          {unit.title}
+        </Box>
+        <Box>{content}</Box>
+      </Box>
+    );
+  } else if (unit.role === "file") {
+    return (
+      <Box className={classes["ex-unit"]}>
+        <Box className={classes["ex-unit__label-panel"]}>
+          {indent}
+          <IconFile />
+          {unit.title} {content}
+        </Box>
+      </Box>
+    );
   }
 }
