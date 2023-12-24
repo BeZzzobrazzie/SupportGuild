@@ -26,28 +26,89 @@ export function TestPage() {
   );
 }
 
-function Explorer() {
-  let nestingLevel = 0;
-  function renderExUnits(childIds: number[]): ReactNode {
+// function Explorer() {
+//   let nestingLevel = 0;
+//   function renderExUnits(childIds: number[]): ReactNode {
     
-    return childIds.map((item) => {
-      const elem = exUnits.find((unit) => unit.id === item);
-      if (elem === undefined) return <></>;
-      const children = elem.childIds;
-      nestingLevel = nestingLevel + 1;
-      const renderNestingLevel = nestingLevel;
-      const result = renderExUnits(children);
-      nestingLevel = nestingLevel - 1;
-      return (
-        <ExUnit key={elem.id} unit={elem} content={result} nestingLevel={renderNestingLevel} />
-      );
-    });
-  }
+//     return childIds.map((item) => {
+//       const elem = exUnits.find((unit) => unit.id === item);
+//       if (elem === undefined) return <></>;
+//       const children = elem.childIds;
+//       nestingLevel = nestingLevel + 1;
+//       const renderNestingLevel = nestingLevel;
+//       const result = renderExUnits(children);
+//       nestingLevel = nestingLevel - 1;
+//       return (
+//         <ExUnit key={elem.id} unit={elem} content={result} nestingLevel={renderNestingLevel} />
+//       );
+//     });
+//   }
+
+//   const root = useStore($root);
+//   const exUnits = useStore($exUnits);
+
+//   const result = renderExUnits(root.childIds);
+
+//   return (
+//     <>
+//       <PopUp>
+//         Error!!!
+//         <button onClick={() => popUpModel.popUpHidden()}>Close</button>
+//       </PopUp>
+//       <Box className={classes["explorer"]}>{result}</Box>
+//     </>
+//   );
+// }
+
+// function ExUnit({
+//   unit,
+//   content,
+//   nestingLevel,
+// }: {
+//   unit: exUnitsStoreType;
+//   content: ReactNode;
+//   nestingLevel: number;
+// }) {
+//   const indent = [];
+//   for (let i = 0; i < nestingLevel; i++) {
+//     indent.push(<Box className={classes["ex-unit__indent"]}></Box>);
+//   }
+
+//   if (unit.role === "dir") {
+//     return (
+//       <Box className={classes["ex-unit"]}>
+//         <Box className={classes["ex-unit__label-panel"]}>
+//           {indent}
+//           <IconChevronRight />
+//           <IconFolderFilled />
+//           {unit.title}
+//         </Box>
+//         <Box>{content}</Box>
+//       </Box>
+//     );
+//   } else if (unit.role === "file") {
+//     return (
+//       <Box className={classes["ex-unit"]}>
+//         <Box className={classes["ex-unit__label-panel"]}>
+//           {indent}
+//           <IconFile />
+//           {unit.title} {content}
+//         </Box>
+//       </Box>
+//     );
+//   }
+// }
+
+
+function Explorer() {
+
 
   const root = useStore($root);
-  const exUnits = useStore($exUnits);
+  const result = [];
+  for (let childId of root.childIds) {
+    result.push(<ExUnit key={childId} id={childId} nestingLevel={0}/>);
 
-  const result = renderExUnits(root.childIds);
+  }
 
   return (
     <>
@@ -61,38 +122,53 @@ function Explorer() {
 }
 
 function ExUnit({
-  unit,
-  content,
+  id,
   nestingLevel,
 }: {
-  unit: exUnitsStoreType;
-  content: ReactNode;
+  id: number;
   nestingLevel: number;
 }) {
   const indent = [];
   for (let i = 0; i < nestingLevel; i++) {
-    indent.push(<Box className={classes["ex-unit__indent"]}></Box>);
+    indent.push(<Box key={i} className={classes["ex-unit__indent"]}></Box>);
   }
 
-  if (unit.role === "dir") {
+  const exUnit = useStoreMap({
+    store: $exUnits,
+    keys: [id],
+    fn: (store, [unitId]) => store.find(({id}) => id === unitId),
+  });
+
+  const content = [];
+  if (exUnit !== undefined) {
+    for (let childId of exUnit.childIds) {
+      content.push(<ExUnit key={childId} id={childId} nestingLevel={nestingLevel + 1}/>);
+    }
+  }
+
+
+  if(exUnit === undefined) {
+
+  }
+  else if (exUnit.role === "dir") {
     return (
       <Box className={classes["ex-unit"]}>
         <Box className={classes["ex-unit__label-panel"]}>
           {indent}
           <IconChevronRight />
           <IconFolderFilled />
-          {unit.title}
+          {exUnit.title}
         </Box>
         <Box>{content}</Box>
       </Box>
     );
-  } else if (unit.role === "file") {
+  } else if (exUnit.role === "file") {
     return (
       <Box className={classes["ex-unit"]}>
         <Box className={classes["ex-unit__label-panel"]}>
           {indent}
           <IconFile />
-          {unit.title} {content}
+          {exUnit.title} {content}
         </Box>
       </Box>
     );
