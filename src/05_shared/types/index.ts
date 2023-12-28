@@ -25,6 +25,7 @@ export interface exUnitsStoreType {
   title: string,
   role: string,
   childIds: number[],
+  opened?: boolean,
 };
 
 

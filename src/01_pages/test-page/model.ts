@@ -7,14 +7,22 @@ import { exUnitsStoreType, rootType } from "src/05_shared/types";
 
 const getExUnitsFx = createEffect(async () => {
   const response = await getExUnits().then();
-
+  response.exUnits = response.exUnits.map((unit : exUnitsStoreType) => {
+    if(unit.role === "file") return unit;
+    else if (unit.role === "dir") {
+      unit.opened = false;
+      return unit;
+    }
+  })
   const result = {root: response.root, exUnits: response.exUnits}
+  console.log(result);
   return result;
 })
 
 
 export const pageMounted = createEvent();
 export const createdFile = createEvent();
+export const dirVisibilitySwitched = createEvent<number>();
 
 export const $root = createStore<rootType>({childIds: []})
   .on(getExUnitsFx.doneData, (_, payload) => payload.root);
@@ -27,6 +35,19 @@ sample({
   clock: pageMounted,
   target: getExUnitsFx,
 });
+
+sample({
+  clock: dirVisibilitySwitched,
+  source: $exUnits,
+  fn: (store, unitId) => store.map((unit) => {
+    if(unit.id === unitId) {
+      unit.opened = !unit.opened;
+      return unit;
+    }
+    else return unit;
+  }),
+  target: $exUnits,
+})
 
 
 
