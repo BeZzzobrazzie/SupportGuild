@@ -1,0 +1,17 @@
+
+.context-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 200px;
+  background-color: #2B2A32;
+  border: 1px solid #747378;
+  border-radius: 5px;
+
+}
+
+.context-menu:focus {
+    outline: none;
+    background-color: red;
+}
