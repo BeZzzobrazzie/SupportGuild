@@ -16,16 +16,14 @@ function App() {
 
   const CMVisibility = useStore(contextMenuModel.$contextMenuVisibility);
 
+  function handleContextMenu(event: MouseEvent) {
+    event.preventDefault();
+    contextMenuModel.showContextMenu(event);
+  }
   useEffect(() => {
-    document.addEventListener("contextmenu", (event) => {
-      event.preventDefault();
-      contextMenuModel.showContextMenu();
-    });
+    document.addEventListener("contextmenu", handleContextMenu);
     return () => {
-      document.removeEventListener("contextmenu", (event) => {
-        event.preventDefault();
-        contextMenuModel.showContextMenu();
-      });
+      document.removeEventListener("contextmenu", handleContextMenu);
     }
   })
 

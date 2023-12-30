@@ -10,22 +10,50 @@ export function ContextMenu() {
   const CMRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if(CMRef.current) CMRef.current.focus();
-    console.log(CMRef);
+    if (CMRef.current) CMRef.current.focus();
   }, []);
 
-
+  const CMCoordinates = useStore(contextMenuModel.$contextMenuCoordinates);
+  const target = useStore(contextMenuModel.$contextMenuTarget);
+  console.log(target);
+  const options = {
+    dir: [
+      {
+        name: "dirOne",
+      },
+      { 
+        name: "dirTwo" 
+      },
+    ],
+    file: [
+      {
+        name: "fileOne",
+      },
+    ],
+  };
 
   return (
-    <>{CMVisibility && <Box className={classes["context-menu"]} onBlur={() => contextMenuModel.hideContextMenu()} ref={CMRef} tabIndex={0}>123</Box>}</>
+    <>
+      {CMVisibility && (
+        <Box
+          onBlur={() => contextMenuModel.hideContextMenu()}
+          ref={CMRef}
+          tabIndex={0}
+          className={classes["context-menu"]}
+          style={{
+            top: CMCoordinates.y,
+            left: CMCoordinates.x,
+          }}
+        >
+          123
+        </Box>
+      )}
+    </>
   );
 }
 
 function MenuOption() {
-
-  function handleClick() {
-
-  }
+  function handleClick() {}
 
   const optionName = "TestOptionName";
 

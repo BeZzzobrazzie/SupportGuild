@@ -72,7 +72,7 @@ function ExUnit({ id, nestingLevel }: { id: number; nestingLevel: number }) {
   if (exUnit === undefined) {
   } else if (exUnit.role === "dir") {
     return (
-      <Box className={classes["ex-unit"]}>
+      <Box className={classes["ex-unit"]} data-role={exUnit.role} data-id={exUnit.id}>
         <Box
           className={classes["ex-unit__label-panel"]}
           onClick={() => dirVisibilitySwitched(id)}
@@ -87,7 +87,7 @@ function ExUnit({ id, nestingLevel }: { id: number; nestingLevel: number }) {
     );
   } else if (exUnit.role === "file") {
     return (
-      <Box className={classes["ex-unit"]}>
+      <Box className={classes["ex-unit"]} data-role={exUnit.role} data-id={exUnit.id}>
         <Box className={classes["ex-unit__label-panel"]}>
           {indent}
           <Box className={classes["ex-unit__file-indent"]}></Box>
