@@ -15,7 +15,17 @@ export function ContextMenu() {
 
   const CMCoordinates = useStore(contextMenuModel.$contextMenuCoordinates);
   const target = useStore(contextMenuModel.$contextMenuTarget);
-  console.log(target);
+
+  let role : string | null = null;
+  if (target instanceof HTMLElement) {
+    let parent = target.closest("[data-role]");
+    if (parent instanceof HTMLElement) {
+      if (parent.dataset.role === undefined) role = null;
+      else role = parent.dataset.role;
+    }
+  }
+
+
   const options = {
     dir: [
       {
@@ -30,7 +40,19 @@ export function ContextMenu() {
         name: "fileOne",
       },
     ],
+    null: [
+      {
+        name: "none",
+      },
+    ],
   };
+
+
+  let result;
+
+  if (role === null) result = 'none';
+  else {
+  }
 
   return (
     <>

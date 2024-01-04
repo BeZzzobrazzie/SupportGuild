@@ -8,7 +8,13 @@ import {
 import classes from "./classes.module.css";
 import { ReactNode, useEffect, useState } from "react";
 import { useEvent, useStore, useStoreMap } from "effector-react";
-import { $exUnits, $pending, $root, dirVisibilitySwitched, pageMounted } from "./model";
+import {
+  $exUnits,
+  $pending,
+  $root,
+  dirVisibilitySwitched,
+  pageMounted,
+} from "./model";
 import { PopUp, popUpModel } from "src/04_entities/pop-up";
 import { exUnitsStoreType } from "src/05_shared/types";
 
@@ -72,10 +78,12 @@ function ExUnit({ id, nestingLevel }: { id: number; nestingLevel: number }) {
   if (exUnit === undefined) {
   } else if (exUnit.role === "dir") {
     return (
-      <Box className={classes["ex-unit"]} data-role={exUnit.role} data-id={exUnit.id}>
+      <Box className={classes["ex-unit"]}>
         <Box
           className={classes["ex-unit__label-panel"]}
           onClick={() => dirVisibilitySwitched(id)}
+          data-role={exUnit.role}
+          data-id={exUnit.id}
         >
           {indent}
           {dirOpened ? <IconChevronDown /> : <IconChevronRight />}
@@ -87,7 +95,11 @@ function ExUnit({ id, nestingLevel }: { id: number; nestingLevel: number }) {
     );
   } else if (exUnit.role === "file") {
     return (
-      <Box className={classes["ex-unit"]} data-role={exUnit.role} data-id={exUnit.id}>
+      <Box
+        className={classes["ex-unit"]}
+        data-role={exUnit.role}
+        data-id={exUnit.id}
+      >
         <Box className={classes["ex-unit__label-panel"]}>
           {indent}
           <Box className={classes["ex-unit__file-indent"]}></Box>
