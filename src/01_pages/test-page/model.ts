@@ -47,15 +47,15 @@ sample({
 
 sample({
   clock: dirVisibilitySwitched,
-  source: $exUnits,
-  fn: (store, unitId) => store.map((unit) => {
+  source: $exDirOpened,
+  fn: (store, unitId) => store === null ? null : store.map((unit) => {
     if(unit.id === unitId) {
       unit.opened = !unit.opened;
       return unit;
     }
     else return unit;
   }),
-  target: $exUnits,
+  target: $exDirOpened,
 })
 
 sample({

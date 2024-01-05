@@ -9,6 +9,7 @@ import classes from "./classes.module.css";
 import { ReactNode, useEffect, useState } from "react";
 import { useEvent, useStore, useStoreMap } from "effector-react";
 import {
+  $exDirOpened,
   $exUnits,
   $pending,
   $root,
@@ -39,6 +40,8 @@ function Explorer() {
     result.push(<ExUnit key={childId} id={childId} nestingLevel={0} />);
   }
 
+  console.log('explorer');
+  console.log(result);
   return (
     <>
       <PopUp>
@@ -56,14 +59,17 @@ function ExUnit({ id, nestingLevel }: { id: number; nestingLevel: number }) {
     indent.push(<Box key={i} className={classes["ex-unit__indent"]}></Box>);
   }
 
-  const [exUnit, dirOpened] = useStoreMap({
+  const dirOpened = useStoreMap({
+    store: $exDirOpened,
+    keys: [id],
+    fn: (store, [unitId]) => store !== null && store.find(({ id }) => id === unitId)?.opened,
+  });
+
+
+  const exUnit = useStoreMap({
     store: $exUnits,
     keys: [id],
-    fn: (store, [unitId]) => {
-      const unit = store.find(({ id }) => id === unitId);
-      const opened = unit?.opened;
-      return [unit, opened];
-    },
+    fn: (store, [unitId]) => store.find(({ id }) => id === unitId),
   });
 
   const content = [];
