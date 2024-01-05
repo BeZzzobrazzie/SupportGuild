@@ -3,6 +3,8 @@ import { useStore } from "effector-react";
 import { contextMenuModel } from "..";
 import classes from "./classes.module.css";
 import { useEffect, useRef } from "react";
+import { deletedExUnit } from "src/01_pages/test-page/model";
+import { Event } from "effector";
 
 export function ContextMenu() {
   const CMVisibility = useStore(contextMenuModel.$contextMenuVisibility);
@@ -17,42 +19,39 @@ export function ContextMenu() {
   const target = useStore(contextMenuModel.$contextMenuTarget);
 
   let role : string | null = null;
+  let targetId : number = -1;
   if (target instanceof HTMLElement) {
     let parent = target.closest("[data-role]");
     if (parent instanceof HTMLElement) {
       if (parent.dataset.role === undefined) role = null;
       else role = parent.dataset.role;
+      if (parent.dataset.id === undefined) targetId = -1;
+      else targetId = parseInt(parent.dataset.id);
     }
   }
 
 
-  const options = {
-    dir: [
-      {
-        name: "dirOne",
-      },
-      { 
-        name: "dirTwo" 
-      },
-    ],
-    file: [
-      {
-        name: "fileOne",
-      },
-    ],
-    null: [
-      {
-        name: "none",
-      },
-    ],
-  };
+  let result : JSX.Element[] = [<MenuOption optionName="none" />];
+  const dirOptions = [{name: "delete", func: deletedExUnit}];
+  const fileOptions = ["4", "5", "6"];
+  const noneOptions = ["none"];
 
 
-  let result;
-
-  if (role === null) result = 'none';
-  else {
+  switch(role) {
+    case 'dir':
+      result = dirOptions.map((item) => <MenuOption optionName={item.name} func={item.func} id={targetId} />)
+      break;
+    case 'file':
+      result = fileOptions.map((item) => <MenuOption optionName={item} />)
+      break;
+    default:
+      result = noneOptions.map((item) => <MenuOption optionName={item} />)
+      break;
+    
   }
+
+
+
 
   return (
     <>
@@ -67,17 +66,19 @@ export function ContextMenu() {
             left: CMCoordinates.x,
           }}
         >
-          123
+          {result}
         </Box>
       )}
     </>
   );
 }
 
-function MenuOption() {
-  function handleClick() {}
-
-  const optionName = "TestOptionName";
+function MenuOption({optionName, func, id} : {optionName : string, func?: Event<number>, id?: number}) {
+  function handleClick() {
+    if(func && id) {
+      func(id);
+    }
+  }
 
   return (
     <div className={classes["menu-option"]} onClick={handleClick}>

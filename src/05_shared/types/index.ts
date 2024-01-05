@@ -28,5 +28,9 @@ export interface exUnitsStoreType {
   opened?: boolean,
 };
 
+export interface exDirOpenedType {
+  id: number,
+  opened: boolean,
+};
 
 export * as sharedTypes from './';

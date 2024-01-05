@@ -47,7 +47,7 @@
   "root": {
     "childIds": [1]
   },
-  "explorer-units": [
+  "exUnits": [
     {
       "id": 1,
       "title": "dir-one",

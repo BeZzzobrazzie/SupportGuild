@@ -38,7 +38,12 @@ export const deleteOperator = async (id: number) => {
 
 
 export const getExUnits = async () => {
-  const response = await host.get("api/explorer-units", {});
-  const { data } = response;
-  return data;
+  const responseExRoot = await host.get<sharedTypes.rootType>("api/explorer-root", {});
+  const responseExUnits = await host.get<sharedTypes.exUnitsStoreType[]>("api/explorer-units", {});
+  return {responseExRoot: responseExRoot.data, responseExUnits: responseExUnits.data};
+};
+
+export const deleteExUnit = async (id: number) => {
+  const response = await host.delete(`api/explorer-units/${id}`);
+  return response;
 };
