@@ -7,7 +7,7 @@ import { sharedTypes } from "../types";
 // });
 
 const host = axios.create({
-  baseURL: "http://localhost:3001",
+  baseURL: "http://192.168.0.104:3001",
   // timeout: 1000,
 });
 
