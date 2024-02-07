@@ -6,6 +6,7 @@ import { TestPage } from "src/01_pages/test-page";
 import { useEffect } from "react";
 import { ContextMenu, contextMenuModel } from "src/04_entities/context-menu";
 import { useStore } from "effector-react";
+import { TemplateManager } from "src/01_pages/template-manager";
 
 function App() {
 
@@ -31,7 +32,8 @@ function App() {
     <MantineProvider theme={testTheme} defaultColorScheme="dark">
       {CMVisibility && <ContextMenu />}
       {/* <HomePage /> */}
-      <TestPage />
+      {/* <TestPage /> */}
+      <TemplateManager />
     </MantineProvider>
   );
 }
